@@ -6,7 +6,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from .models import Bookings
-from courts.models import Courts
+from courts.models import Court
 from accounts.models import Users
 
 @staff_member_required  # chỉ admin hoặc staff có thể truy cập
