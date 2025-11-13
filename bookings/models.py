@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Bookings(models.Model):
     STATUS_CHOICES = (
         ('PENDING', 'PENDING'),
@@ -7,12 +7,7 @@ class Bookings(models.Model):
         ('CANCELLED', 'CANCELLED'),
     )
 
-    user = models.ForeignKey(
-        'accounts.Users',
-        db_column='UserId',
-        on_delete=models.CASCADE,
-        related_name='bookings'
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
     court = models.ForeignKey(
         'courts.Court',
         db_column='CourtId',

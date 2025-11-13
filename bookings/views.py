@@ -1,13 +1,14 @@
 # booking/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from decimal import Decimal
+from django.contrib import messages
 
 from .models import Bookings
 from courts.models import Court
-from accounts.models import Users
+
 
 @staff_member_required  # chỉ admin hoặc staff có thể truy cập
 def admin_booking_list(request):
@@ -29,7 +30,7 @@ def customer_booking(request):
         start_datetime = datetime.strptime(f"{date_str} {start_time_str}", "%Y-%m-%d %H:%M")
         end_datetime = datetime.strptime(f"{date_str} {end_time_str}", "%Y-%m-%d %H:%M")
 
-        court = Courts.objects.get(id=court_id)
+        court = Court.objects.get(id=court_id)
 
         # Tính số giờ đặt
         total_hours = (end_datetime - start_datetime).seconds / 3600
@@ -38,7 +39,7 @@ def customer_booking(request):
         price_per_hour = court.price_per_hour  # cần có field này trong bảng Courts
         total_amount = Decimal(total_hours) * Decimal(price_per_hour)
 
-        # Tạo bản ghi đặt sân
+
         booking = Bookings.objects.create(
             user=request.user,
             court=court,
